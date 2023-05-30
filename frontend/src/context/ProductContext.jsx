@@ -12,39 +12,55 @@ const ProductContextProvider = ({ children }) => {
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(true);
   
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (user) {
-          const result = await axios.get('http://localhost:8080/api/product')
-          setData(result.data);
-          console.log(result.data);
-          setIsLoading(false);
-        } else {
-          setData([])
-          setIsLoading(false)
-        }
-      } catch (error) {
-        console.log('Error fetching data:', error)
-      }
-    }
 
+  const fetchData = async () => {
+    try {
+      if (user) {
+        const result = await axios.get('http://localhost:8080/api/product')
+        setData(result.data);
+        console.log(result.data);
+        setIsLoading(false);
+      } else {
+        setData([])
+        setIsLoading(false)
+      }
+    } catch (error) {
+      console.log('Error fetching data:', error)
+    }
+  }
+
+  useEffect(() => {
     fetchData()
   }, [user])
 
   const getProductById = async (productId) => {
     try {
-      const result = await axios.get(`http://localhost:8080/api/product/${productId}`);
-      return result.data;
+      const res = await axios.get(`http://localhost:8080/api/product/${productId}`);
+      return res.data;
     } catch (error) {
       console.log('Error fetching product by ID:', error);
       return null;
     }
   };
 
+  const deleteProduct = async (productId) => {
+    try {
+      const res = await axios.delete(`http://localhost:8080/api/product/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${user}`
+        }
+      })
+      console.log(res);
+    } catch (error) {
+      console.log('Error deleting product:', error);
+    }
+  }
+
   const value = {
     data,
-    getProductById
+    getProductById,
+    fetchData,
+    deleteProduct
   }
 
   return (

@@ -1,10 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { BsFillTrash3Fill } from "react-icons/bs";
+import { useNavigate, useParams } from 'react-router-dom'
 import { ProductContext } from '../context/ProductContext'
 import { UserContext } from '../context/UserContext'
 import axios from 'axios'
 
 const Edit = () => {
+
+  const { fetchData } = useContext(ProductContext)
+
+  const navigate = useNavigate();
 
   const initState = {
     name: '',
@@ -14,7 +19,7 @@ const Edit = () => {
   }
 
   const { user } = useContext(UserContext)
-  // console.log(user);
+  const { deleteProduct } = useContext(ProductContext)
 
   const { getProductById } = useContext(ProductContext)
   const { productId } = useParams();
@@ -42,6 +47,7 @@ const Edit = () => {
       ...prevState,
       [e.target.name]: e.target.value
     }))
+    setIsSuccess(false)
   }
 
   const handleSubmit = async e => {
@@ -55,26 +61,38 @@ const Edit = () => {
       })
       console.log(res);
       setIsSuccess(true)
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 2000);
       if (setIsSuccess) {
         const updateProductRes = await axios.get(`http://localhost:8080/api/product/${productId}`)
         const updateProductData = updateProductRes.data
         setProduct(updateProductData)
         setFormData(updateProductData)
         setIsSuccess(true)
-        console.log('re render the product card with the updated values');
       }
     } catch (error) {
       console.log('Error editing product', error);
     }
   }
 
+  
+  const handleDelete = async () => {
+    const confirmed = window.confirm('Are you sure you want to delete this product?')
+
+    if (confirmed) {
+      try {
+        await deleteProduct(productId);
+        fetchData()
+        setIsSuccess(true);
+        navigate('/products');
+      } catch (error) {
+        console.log('Error deleting product:', error);
+      }
+    }
+  };
+
 
   return (
     <>
-      <h1 className='text-center my-5'>Edit product</h1>
+      <h1 className='text-center my-5'>Edit or Delete a product</h1>
       {isSuccess && (
         <div className="alert alert-success" role="alert">
           Product edited successfully!
@@ -136,7 +154,14 @@ const Edit = () => {
           placeholder={product.description}
           ></textarea>
         </div>
+        <div className='d-flex justify-content-between'>
           <button className='btn btn-primary' type='submit'>Confirm</button>
+          <button className='btn btn-danger d-flex align-items-center' 
+          type='button'
+          onClick={handleDelete}>
+            <BsFillTrash3Fill size={20} />
+          </button>
+        </div>
       </form>
       </div>
     </>

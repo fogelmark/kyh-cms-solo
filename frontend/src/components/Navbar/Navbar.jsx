@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import './Navbar.scss'
 import { Link, NavLink } from 'react-router-dom'
 import { BsFillBoxFill } from "react-icons/bs"

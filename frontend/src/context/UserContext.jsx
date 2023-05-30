@@ -10,7 +10,6 @@ const UserContextProvider = ({children}) => {
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
-        console.log(storedUser);
       } catch (error) {
         console.error("Error parsing user data:", error);
       }

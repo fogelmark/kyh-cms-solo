@@ -1,10 +1,12 @@
 import { useContext, useState } from 'react'
 import axios from 'axios'
 import { UserContext } from '../context/UserContext'
+import { ProductContext } from '../context/ProductContext'
 
 const Add = () => {
 
   const { user } = useContext(UserContext)
+  const { fetchData } = useContext(ProductContext)
 
   const initState = {
     name: '',
@@ -22,6 +24,7 @@ const Add = () => {
       ...prevState,
       [e.target.name]: e.target.value
     }))
+    setIsSuccess(false)
   }
   
   const handleSubmit = async e => {
@@ -36,9 +39,10 @@ const Add = () => {
       setFormData(initState)
       setIsSuccess(true)
       console.log(res);
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+      if (setIsSuccess) {
+        fetchData()
+        setIsSuccess(true)
+      }
     } catch (error) {
       console.log('Error adding product', error);
     }
