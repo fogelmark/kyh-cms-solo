@@ -16,9 +16,9 @@ const ProductContextProvider = ({ children }) => {
   const fetchData = async () => {
     try {
       if (user) {
-        const result = await axios.get('http://localhost:8080/api/product')
-        setData(result.data);
-        console.log(result.data);
+        const res = await axios.get('http://localhost:8080/api/product')
+        setData(res.data);
+        console.log(res.data);
         setIsLoading(false);
       } else {
         setData([])

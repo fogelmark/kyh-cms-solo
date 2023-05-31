@@ -30,34 +30,37 @@ exports.createNewUser = async (req, res) =>{
 }
 
 
-exports.loginUser = (req, res) => {
-    const {email, password} = req.body
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
 
-    if(!email || !password){
-        return res.status(400).json({message: 'You need to enter both email and password'})
+  if (!email || !password) {
+    return res.status(400).json({ message: 'You need to enter both email and password' });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Incorrect credentials' });
     }
-    
-    User.findOne({email})
-    .then(data =>{
-        if(!data){
-            return res.status(401).json({message: 'incorrect credentials'})
-        }
 
-        bcrypt.compare(password, data.passwordHash, (err, result) => {
-            if(err){
-                return res.status(500).json({message: 'something went wrong when decrypting the password'})
-            }
+    bcrypt.compare(password, user.passwordHash, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'Something went wrong when decrypting the password' });
+      }
 
-            if(!result){
-                return res.status(401).json({message: 'Incorrect credentials'})
-            }
+      if (!result) {
+        return res.status(401).json({ message: 'Incorrect credentials' });
+      }
 
-            res.status(200).json({token: auth.generateToken(data)})
-        })
-
-
-    })
-}
+      const token = auth.generateToken(user);
+      res.status(200).json({ token, user });
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 exports.getAllUsers = (req, res) =>{
     User.find()

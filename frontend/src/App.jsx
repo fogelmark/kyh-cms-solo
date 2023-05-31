@@ -11,6 +11,8 @@ import Products from './pages/Products'
 import ProductDetails from './pages/ProductDetails'
 import { UserContext } from './context/UserContext'
 import ProtectedRoute from './components/ProtectedRoute'
+import Orders from './pages/Orders'
+import OrderDetails from './pages/OrderDetails'
 
 const App = () => {
 
@@ -38,9 +40,15 @@ const App = () => {
           </ProtectedRoute>
         },
         {
-          path: 'delete',
+          path: 'orders',
           element: <ProtectedRoute user={user}>
-            <Delete />
+            <Orders />
+          </ProtectedRoute>
+        },
+        {
+          path: 'orderdetails',
+          element: <ProtectedRoute user={user}>
+            <OrderDetails />
           </ProtectedRoute>
         },
         {

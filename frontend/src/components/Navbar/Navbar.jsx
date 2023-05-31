@@ -32,6 +32,7 @@ const Navbar = () => {
               </span>
               <ul className="dropdown-menu">
                 <li><Link className="dropdown-item" to="/add">Add Product</Link></li>
+                <li><Link className="dropdown-item" to="/orders">Orders</Link></li>
                 {/* <li><Link className="dropdown-item" to="/edit">Edit Product</Link></li>
                 <li><Link className="dropdown-item" to="/delete">Delete Product</Link></li> */}
               </ul>

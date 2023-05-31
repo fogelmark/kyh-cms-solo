@@ -1,43 +1,46 @@
 const Order = require('../Schema/orderSchema')
 
-exports.createOrder = async (req, res)=> {
-    const { orderRader } = req.body
+exports.createNewOrder = async (req, res) => {
+  const { orderRows } = req.body
+  console.log('Received request to create new order:', orderRows)
 
-    if(!orderRader){
-        return res.status(400).json({message: 'yuor need to fill all the fields'})
-    }
-
-    const order = await Order.create({orderRader, user: req.userId})
-
-    if(!order){
-        return res.status(500).json({message: 'something went wrong '})
-
-    }
-
-    res.status(200).json(order)
-}
-
-
-exports.getMyOrder = async (req, res) => {
-
-    const orders = await Order.find({user: req.userId})
-
-    if(!orders){
-        return res.status(404).json({message: 'Could not fint the orders'})
-    }
-
-    res.status(200).json(orders)
-}
-
-
-exports.getOrders = async (req, res) =>{
-    const orders = await Order.find().populate({
-        path: 'user', 
-        select: "_id email "
+  if(!orderRows) {
+    console.log('Missing orderRows field')
+    return res.status(400).json({
+      message: "You need to enter all fields"
     })
-    if(!orders){
-        return res.status(404).json({message: 'Could not fint the orders'})
-    }
+  }
+  try {
+    const data = await Order.create({
+      orderRows,
+      userId: req.userId
+    })
+    console.log('Order created:', data)
+    res.status(201).json(data)
+  } catch (error) {
+    console.log('Error creating order:', error)
+    return res.status(500).json({
+      message: "Something went wrong when creating the order",
+      error: error.message
+    })
+  }
+}
 
+exports.getUserOrder = async (req, res) => {
+  try {
+    const orders = await Order.find({userId: req.userId})
     res.status(200).json(orders)
+  } catch (error) {   
+    return res.status(404).json({message: 'Could not find user order'})
+  }
+}
+
+
+exports.getAllOrders = async (req, res) =>{
+  try {
+    const orders = await Order.find()
+    res.status(200).json(orders)
+  } catch (error) {
+    return res.status(404).json({ message: 'Could not fetch orders'})
+  }
 }
