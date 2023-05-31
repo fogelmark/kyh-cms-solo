@@ -16,15 +16,27 @@ const OrderContextProvider = ({ children }) => {
     try {
       if (user) {
         const res = await axios.get('http://localhost:8080/api/orders/allOrders')
-        setOrderData(res.data)
-        setIsLoading(false)
-      } else {
+        // console.log('Response:', res.data);
+        const orders = res.data
+        const ordersWithUserNames = await Promise.all(
+          orders.map(async (order) => {
+            const userRes = await axios.get(`http://localhost:8080/api/user/${order.userId}`)
+            const user = userRes.data
+            // console.log(user)
+            return { ...order, userName: user.displayName }
+          })
+          );
+          setOrderData(ordersWithUserNames)
+          setIsLoading(false)
+        } else {
         setOrderData([])
+        setIsLoading(false)
       }
     } catch (error) {
-      console.log('Error fetching orders', error);
+      console.log('Error fetching orders', error)
     }
-  }
+  };
+  
 
   useEffect(() => {
     fetchOrders()

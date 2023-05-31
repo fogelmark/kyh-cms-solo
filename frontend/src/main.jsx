@@ -8,7 +8,7 @@ import UserContextProvider from './context/UserContext.jsx'
 import OrderContextProvider from './context/OrderContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <UserContextProvider>
       <ProductContextProvider>
         <OrderContextProvider>
@@ -16,5 +16,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </OrderContextProvider>
       </ProductContextProvider>
     </UserContextProvider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )

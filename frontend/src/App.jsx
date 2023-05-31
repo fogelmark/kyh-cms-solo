@@ -5,7 +5,6 @@ import RootLayout from './layouts/RootLayout'
 import Home from './pages/Home'
 import Add from './pages/Add'
 import Edit from './pages/Edit'
-import Delete from './pages/Delete'
 import Login from './pages/Login'
 import Products from './pages/Products'
 import ProductDetails from './pages/ProductDetails'
@@ -46,7 +45,7 @@ const App = () => {
           </ProtectedRoute>
         },
         {
-          path: 'orderdetails',
+          path: 'order/:orderId',
           element: <ProtectedRoute user={user}>
             <OrderDetails />
           </ProtectedRoute>

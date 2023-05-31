@@ -2,10 +2,8 @@ const Order = require('../Schema/orderSchema')
 
 exports.createNewOrder = async (req, res) => {
   const { orderRows } = req.body
-  console.log('Received request to create new order:', orderRows)
 
   if(!orderRows) {
-    console.log('Missing orderRows field')
     return res.status(400).json({
       message: "You need to enter all fields"
     })
@@ -15,10 +13,8 @@ exports.createNewOrder = async (req, res) => {
       orderRows,
       userId: req.userId
     })
-    console.log('Order created:', data)
-    res.status(201).json(data)
+    res.status(201).json({ userId: data.userId })
   } catch (error) {
-    console.log('Error creating order:', error)
     return res.status(500).json({
       message: "Something went wrong when creating the order",
       error: error.message

@@ -18,7 +18,6 @@ const ProductContextProvider = ({ children }) => {
       if (user) {
         const res = await axios.get('http://localhost:8080/api/product')
         setData(res.data);
-        console.log(res.data);
         setIsLoading(false);
       } else {
         setData([])
@@ -50,7 +49,6 @@ const ProductContextProvider = ({ children }) => {
           Authorization: `Bearer ${user}`
         }
       })
-      console.log(res);
     } catch (error) {
       console.log('Error deleting product:', error);
     }
