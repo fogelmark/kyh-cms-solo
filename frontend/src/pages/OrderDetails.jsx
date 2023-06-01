@@ -9,6 +9,7 @@ const OrderDetails = () => {
   const { orderData, updateStatus } = useContext(OrderContext)
   const order = orderData.find(order => order._id === orderId);
   const [selectedRadio, setSelectedRadio] = useState(order?.status || 'radio1');
+  console.log(order._id);
 
 
   const handleRadioChange = (e) => {
@@ -55,7 +56,6 @@ const OrderDetails = () => {
                 autoComplete="off"
                 checked={selectedRadio === 'pending'}
                 onChange={handleRadioChange}
-                // onClick={handleStatus}
               />
               <label className="btn btn-outline-primary" htmlFor="radio1">
                 pending
@@ -70,12 +70,11 @@ const OrderDetails = () => {
                 autoComplete="off"
                 checked={selectedRadio === 'shipped'}
                 onChange={handleRadioChange}
-                // onClick={handleStatus}
               />
               <label className="btn btn-outline-primary" htmlFor="radio2">
                 shipped
               </label>
-
+              
               <input
                 type="radio"
                 className="btn-check"
@@ -85,7 +84,6 @@ const OrderDetails = () => {
                 autoComplete="off"
                 checked={selectedRadio === 'completed'}
                 onChange={handleRadioChange}
-                // onClick={handleStatus}
               />
               <label className="btn btn-outline-primary" htmlFor="radio3">
                 completed
@@ -100,7 +98,6 @@ const OrderDetails = () => {
                 autoComplete="off"
                 checked={selectedRadio === 'cancelled'}
                 onChange={handleRadioChange}
-                // onClick={handleStatus}
               />
               <label className="btn btn-outline-primary" htmlFor="radio4">
                 cancelled

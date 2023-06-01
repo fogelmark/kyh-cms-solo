@@ -25,17 +25,6 @@ const OrderContextProvider = ({ children }) => {
       console.log('Error fetching orders', error)
     }
   };
-
-  // const updateStatus = async () => {
-  //   try {
-  //     if (user) {
-  //       const res = await axios.put(`http://localhost:8080/api/orders/${orderId}`)
-  //       setOrderStatus(res.data)
-  //     }
-  //   } catch (error) {
-  //     console.log('error');
-  //   }
-  // }
   
   const updateStatus = async (orderId, status) => {
     console.log(status);
@@ -55,7 +44,7 @@ const OrderContextProvider = ({ children }) => {
         } catch (error) {
           console.log('Error updating order status', error);
         }
-      };
+    };
 
   useEffect(() => {
     fetchOrders()
