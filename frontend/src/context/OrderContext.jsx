@@ -8,7 +8,6 @@ export const OrderContext = createContext()
 const OrderContextProvider = ({ children }) => {
 
   const { user } = useContext(UserContext)
-
   const [orderData, setOrderData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -16,17 +15,7 @@ const OrderContextProvider = ({ children }) => {
     try {
       if (user) {
         const res = await axios.get('http://localhost:8080/api/orders/allOrders')
-        // console.log('Response:', res.data);
-        const orders = res.data
-        const ordersWithUserNames = await Promise.all(
-          orders.map(async (order) => {
-            const userRes = await axios.get(`http://localhost:8080/api/user/${order.userId}`)
-            const user = userRes.data
-            // console.log(user)
-            return { ...order, userName: user.displayName }
-          })
-          );
-          setOrderData(ordersWithUserNames)
+          setOrderData(res.data)
           setIsLoading(false)
         } else {
         setOrderData([])
@@ -36,14 +25,45 @@ const OrderContextProvider = ({ children }) => {
       console.log('Error fetching orders', error)
     }
   };
+
+  // const updateStatus = async () => {
+  //   try {
+  //     if (user) {
+  //       const res = await axios.put(`http://localhost:8080/api/orders/${orderId}`)
+  //       setOrderStatus(res.data)
+  //     }
+  //   } catch (error) {
+  //     console.log('error');
+  //   }
+  // }
   
+  const updateStatus = async (orderId, status) => {
+    console.log(status);
+    try {
+      if (user) {
+        await axios.put(`http://localhost:8080/api/orders/${orderId}`, { status }, {
+          headers: {
+            Authorization: `Bearer ${user}`
+          }
+        });
+        setOrderData(prevOrderData =>
+          prevOrderData.map(order =>
+            order._id === orderId ? { ...order, status } : order
+              )
+            );
+          }
+        } catch (error) {
+          console.log('Error updating order status', error);
+        }
+      };
 
   useEffect(() => {
     fetchOrders()
   }, [user])
 
   const value = {
-    orderData
+    orderData,
+    updateStatus
   }
 
   return (

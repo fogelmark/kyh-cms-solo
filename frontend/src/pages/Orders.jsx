@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 
 const Orders = () => {
   const { orderData } = useContext(OrderContext)
+  console.log(orderData)
 
   return (
     <div>

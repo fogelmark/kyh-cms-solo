@@ -22,6 +22,15 @@ exports.createNewOrder = async (req, res) => {
   }
 }
 
+exports.updateStatus = async (req, res) => {
+  try {
+    const status = await Order.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    res.status(200).json(status)
+  } catch (error) {
+    return res.status(404).json({message: 'Could not update status'})
+  }
+}
+
 exports.getUserOrder = async (req, res) => {
   try {
     const orders = await Order.find({userId: req.userId})

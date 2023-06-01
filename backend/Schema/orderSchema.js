@@ -8,7 +8,8 @@ const orderRowSchema = mongoose.Schema({
 
 const orderSchema = new Schema({
   userId:       { type: mongoose.Types.ObjectId },
-  orderRows:    { type: [orderRowSchema] }
+  orderRows:    { type: [orderRowSchema] },
+  status:       { type: String, default: 'pending' }
 })
 
 module.exports = mongoose.model('Order', orderSchema)
