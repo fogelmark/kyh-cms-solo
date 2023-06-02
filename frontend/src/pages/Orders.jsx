@@ -7,14 +7,15 @@ const Orders = () => {
   console.log(orderData)
 
   return (
-    <div>
-      <div className="orders">
+    <div className='my-5 d-flex justify-content-center'>
+      <ul className="list-group" style={{ width: 'fit-content'}}>
+        <li className='list-group-item list-group-item-dark'>Orders</li>
         {orderData.map(order => (
-          <div key={order._id}>
-            <Link to={`/order/${order._id}`}>Order: {order._id}</Link>
-          </div>
+          <li className='list-group-item' key={order._id}>
+            <Link to={`/order/${order._id}`}>{order._id}</Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   )
 }

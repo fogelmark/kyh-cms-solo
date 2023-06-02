@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div className='container'>
       <h1 className='my-5 text-center'>CMS</h1>
-      <div className='d-flex align-items-center justify-content-center gap-5'>
+      <div className='d-flex align-items-center m-5 gap-5'>
         <div className='card text-center'>
           <div className='card-body'>
             Please login with your admin account to gain access to all features.

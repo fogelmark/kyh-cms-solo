@@ -67,6 +67,7 @@ const Edit = () => {
         setProduct(updateProductData)
         setFormData(updateProductData)
         setIsSuccess(true)
+        fetchData()
       }
     } catch (error) {
       console.log('Error editing product', error);
